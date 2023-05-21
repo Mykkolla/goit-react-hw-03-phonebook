@@ -16,8 +16,20 @@ export class PhoneBook extends Component {
     filter: '',
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log('add');
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+  componentDidMount() {
+    const contactsMount = JSON.parse(localStorage.getItem('contacts'));
+    if (contactsMount) {
+      this.setState({ contacts: contactsMount });
+    }
+  }
+
   addContact = ({ name, number }) => {
-    // const existingNames = this.state.contacts.map(contact => contact.name);
     const existingNames = this.state.contacts.some(
       contact => contact.name.toLowerCase() === name.toLowerCase()
     );
